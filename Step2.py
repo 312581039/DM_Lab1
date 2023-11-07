@@ -72,7 +72,6 @@ def returnItemsWithMinSupportAndClosed(itemSet, transactionList, minSupport, clo
     return _itemSet, countDict
 
 
-# 得到itemset的組合
 def joinSet(itemSet, length):
     """Join a set with itself and returns the n-element itemsets"""
     return set(
@@ -115,7 +114,7 @@ def frequent_itemset(data_iter, minSupport):
         currentCSet= returnItemsWithMinSupport(
             currentLSet, transactionList, minSupport, freqSet
         )
-        info += f'{k-1}\t{len(currentLSet)}\t{len(currentCSet)}\n'
+        info += f"{k-1}\t{len(currentLSet)}\t{len(currentCSet)}\n"
         currentLSet = currentCSet
         k = k + 1
     
