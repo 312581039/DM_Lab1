@@ -40,24 +40,19 @@ def returnItemsWithMinSupport(itemSet, transactionList, minSupport, freqSet):
 
 
 def returnItemsWithMinSupportAndClosed(itemSet, transactionList, minSupport, closedFreqSet, prevCount=None):
-    """calculates the support for items in the itemSet and returns a subset
-    of the itemSet each of whose elements satisfies the minimum support"""
     _itemSet = set()
     countDict = defaultdict(int)
     localSet = defaultdict(int)
-    
     for item in itemSet:
         for transaction in transactionList:
             if item.issubset(transaction):
                 localSet[item] += 1
-
     for item, count in localSet.items():
         support = float(count) / len(transactionList)
 
         if support >= minSupport:
             _itemSet.add(item)
-            countDict[item] = count
-    
+            countDict[item] = count  
     if prevCount and countDict:
         for prev, count_ in prevCount.items():  # k   : count_
             Closed = True
@@ -68,7 +63,6 @@ def returnItemsWithMinSupportAndClosed(itemSet, transactionList, minSupport, clo
                         break
             if Closed:
                 closedFreqSet[prev] = float(count_) / len(transactionList)
-
     return _itemSet, countDict
 
 
@@ -92,19 +86,11 @@ def getItemSetTransactionList(data_iterator):
 
 
 def frequent_itemset(data_iter, minSupport):
-    """
-    run the apriori algorithm. data_iter is a record iterator
-    Return both:
-     - items (tuple, support)
-    """
     itemSet, transactionList = getItemSetTransactionList(data_iter)
     freqSet = defaultdict(int)
     largeSet = dict()
-    # Global dictionary which stores (key=n-itemSets,value=support)
-    # which satisfy minSupport
 
     oneCSet = returnItemsWithMinSupport(itemSet, transactionList, minSupport, freqSet)
-    
     currentLSet = oneCSet
     k = 2
     info = ''
@@ -117,7 +103,6 @@ def frequent_itemset(data_iter, minSupport):
         info += f"{k-1}\t{len(currentLSet)}\t{len(currentCSet)}\n"
         currentLSet = currentCSet
         k = k + 1
-    
 
     def getSupport(item):
         """local function which Returns the support of an item"""
@@ -131,16 +116,10 @@ def frequent_itemset(data_iter, minSupport):
 
 
 def frequent_closed_itemset(data_iter, minSupport):
-    """
-    run the apriori algorithm. data_iter is a record iterator
-    Return both:
-     - items (tuple, support)
-    """
+
     itemSet, transactionList = getItemSetTransactionList(data_iter)
     closedFreqSet = defaultdict(int)
     largeSet = dict()
-    # Global dictionary which stores (key=n-itemSets,value=support)
-    # which satisfy minSupport
 
     oneCSet, countDict = returnItemsWithMinSupportAndClosed(itemSet, transactionList, minSupport, closedFreqSet)
     prevCount = countDict
@@ -225,8 +204,6 @@ def saveFreqClosed(dict, filename, minS, total):
         for freq in sort_itemset:
             info = str(round(freq[1]*100, 1)) + '\t{' + ",".join(freq[0]) + '}\n'
             f.write(info)
-    pass
-
 
 
 if __name__ == "__main__":
@@ -282,13 +259,3 @@ if __name__ == "__main__":
     else:
         print("No dataset filename specified, system with exit\n")
         sys.exit("System will exit")
-
-
-
-
-
-    # minSupport = options.minS
-
-    # items = runApriori(inFile, minSupport)
-
-    # printResults(items)
