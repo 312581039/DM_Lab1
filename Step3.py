@@ -57,7 +57,7 @@ if __name__ == '__main__':
             end = time.time()
             print("Execute time - Task 1: \033[31m{:.5f}\033[0m".format(end - start))
             sort_itemset = sorted(FreqSet.items(), key=lambda item: item[1], reverse=True)
-            with open(f'./output/step3_task1_dataset{file}_{minS}_result1.txt', 'w') as f:
+            with open(f'./output/step3_task1_dataset{file[-6]}_{minS}_result1.txt', 'w') as f:
                 for freq in sort_itemset:
                     info = str(round(freq[1], 1)) + '\t' + freq[0] + '\n'
                     f.write(info) 
